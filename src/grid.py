@@ -48,14 +48,14 @@ class Grid():
         """
         self.screen.fill(color)
 
-    def generate_walls(self, color: tuple[int], amt: int =20) -> None:
+    def generate_walls(self, color: tuple[int], walls: int =20) -> None:
         """Blocks off random grids.
         
         Args:
-            amt: number of walls
+            walls: number of walls
             color: color of wall
         """
-        for _ in range(amt):
+        for _ in range(walls):
             r = random.randint(0, self.num_rows - 1)
             c = random.randint(0, self.num_cols - 1)
             rect = pygame.Rect(c * self.cell_size, r * self.cell_size, self.cell_size, self.cell_size)
@@ -77,11 +77,12 @@ class Grid():
 
     def reset(self):
         """Resets grid to preset defaults."""
+        wall_count = int((self.height + self.width) * 2 / 8)
         self.values = [
             [1] * (self.num_cols) 
             for i in range(self.num_rows)
         ]
         self.set_background(Colors.BLACK)
         self.draw_lines(Colors.WHITE)
-        self.generate_walls(Colors.WHITE, 50)
+        self.generate_walls(Colors.WHITE, wall_count)
         self.generate_end(Colors.BLUE)

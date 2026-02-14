@@ -32,7 +32,7 @@ def bfs(grid: Grid, color: tuple[int], x: int=0, y: int=0) -> bool:
                 return True
 
         pygame.event.pump()
-        clock.tick(30)
+        clock.tick(80)
 
         r, c = neighbors.popleft()
         visited.append((r, c))
@@ -69,8 +69,7 @@ def bfs_trace(grid: Grid, visited: set, color: tuple[int]) -> None:
     """
     clock = pygame.time.Clock()
     for r, c in visited:
-        pygame.event.pump()
-        clock.tick(180)
+        clock.tick(240)
         rect = pygame.Rect(c * grid.cell_size, r * grid.cell_size, grid.cell_size, grid.cell_size)
         pygame.draw.rect(grid.screen, color, rect)
         pygame.display.update(rect)
