@@ -16,13 +16,11 @@ grid = Grid(
     cell_size=Display.CELL_SIZE,
 )
 
-grid.set_background(Colors.BLACK)
-grid.draw_lines(Colors.WHITE)
-grid.generate_walls(Colors.WHITE, 50)
-grid.generate_end(Colors.BLUE)
+grid.reset()
 
 running = True
-started = False
+has_run = False
+run_again = False
 
 try:
     while running:
@@ -30,9 +28,14 @@ try:
             if event.type == pygame.QUIT:
                 running = False
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    grid.reset()
+                    has_run = False
+
         pygame.display.update()
 
-        if not started:
+        if not has_run:
             invalid = True
             while invalid:
                 start_x = random.randint(0, grid.num_rows - 1)
@@ -40,8 +43,13 @@ try:
                 starting_position = grid.values[start_x][start_y]
                 invalid = (starting_position == 1 or starting_position == 2)
 
-            bfs(grid, x=start_x, y=start_y, color=Colors.YELLOW)
-            started = True
+            run_again = bfs(grid, x=start_x, y=start_y, color=Colors.YELLOW)
+
+            if run_again:
+                grid.reset()
+                has_run = False
+            else:
+                has_run = True
 
 except KeyboardInterrupt:
     print("Exited successfully")

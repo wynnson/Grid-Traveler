@@ -3,7 +3,7 @@ from collections import deque
 from src.grid import Grid
 from src.config.colors import Colors
 
-def bfs(grid: Grid, color: tuple[int], x: int=0, y: int=0) -> None:
+def bfs(grid: Grid, color: tuple[int], x: int=0, y: int=0) -> bool:
     """BFS traveler.
 
     Args:
@@ -23,6 +23,14 @@ def bfs(grid: Grid, color: tuple[int], x: int=0, y: int=0) -> None:
     grid.values[x][y] = 0
 
     while neighbors:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                return True
+
         pygame.event.pump()
         clock.tick(30)
 
@@ -42,7 +50,7 @@ def bfs(grid: Grid, color: tuple[int], x: int=0, y: int=0) -> None:
             if 0 <= neighbor_row < grid.num_rows and 0 <= neighbor_col < grid.num_cols:
 
                 if grid.values[neighbor_row][neighbor_col] == 1:
-                    grid.values[neighbor_row][neighbor_col] = 0
+                    grid.values[neighbor_row][neighbor_col] = -1
                     neighbors.append((neighbor_row, neighbor_col))
 
                 elif grid.values[neighbor_row][neighbor_col] == 2:
@@ -50,6 +58,7 @@ def bfs(grid: Grid, color: tuple[int], x: int=0, y: int=0) -> None:
 
     status = Colors.GREEN if completed else Colors.RED
     bfs_trace(grid, visited, status)
+    return False
         
 def bfs_trace(grid: Grid, visited: set, color: tuple[int]) -> None:
     """BFS tracer to highlight traveler.
@@ -61,7 +70,7 @@ def bfs_trace(grid: Grid, visited: set, color: tuple[int]) -> None:
     clock = pygame.time.Clock()
     for r, c in visited:
         pygame.event.pump()
-        clock.tick(160)
+        clock.tick(180)
         rect = pygame.Rect(c * grid.cell_size, r * grid.cell_size, grid.cell_size, grid.cell_size)
         pygame.draw.rect(grid.screen, color, rect)
         pygame.display.update(rect)

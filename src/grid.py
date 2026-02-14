@@ -1,5 +1,6 @@
 import pygame
 import random
+from src.config.colors import Colors
 
 class Grid():
     """Grid for traveling."""
@@ -25,10 +26,7 @@ class Grid():
         self.cell_size = cell_size
         self.num_rows = self.height // self.cell_size
         self.num_cols = self.width // self.cell_size
-        self.values = [
-            [1] * (self.num_cols) 
-            for i in range(self.num_rows)
-        ]
+        self.values = None
 
     def draw_lines(self, color: tuple[int]) -> None:
         """Draws grid lines.
@@ -76,3 +74,14 @@ class Grid():
         rect = pygame.Rect(c * self.cell_size, r * self.cell_size, self.cell_size, self.cell_size)
         pygame.draw.rect(self.screen, color, rect)
         self.values[r][c] = 2
+
+    def reset(self):
+        """Resets grid to preset defaults."""
+        self.values = [
+            [1] * (self.num_cols) 
+            for i in range(self.num_rows)
+        ]
+        self.set_background(Colors.BLACK)
+        self.draw_lines(Colors.WHITE)
+        self.generate_walls(Colors.WHITE, 50)
+        self.generate_end(Colors.BLUE)
