@@ -5,7 +5,7 @@
 </div>
 
 ## Description
-A simple 2d grid traveler with pygame.
+A simple 2d grid traveler with pygame to visualize traditional graph traversal algorithms. 
 
 ## Requirements
 Python virtual environment is recommended.
