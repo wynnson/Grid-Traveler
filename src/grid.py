@@ -60,7 +60,7 @@ class Grid():
         for _ in range(amt):
             r = random.randint(0, self.num_rows - 1)
             c = random.randint(0, self.num_cols - 1)
-            rect = pygame.Rect(r * self.cell_size, c * self.cell_size, self.cell_size, self.cell_size)
+            rect = pygame.Rect(c * self.cell_size, r * self.cell_size, self.cell_size, self.cell_size)
             pygame.draw.rect(self.screen, color, rect)
             if self.values[r][c] != 2:
                 self.values[r][c] = 0
@@ -73,6 +73,6 @@ class Grid():
         """
         r = random.randint(0, self.num_rows - 1)
         c = random.randint(0, self.num_cols - 1)
-        rect = pygame.Rect(r * self.cell_size, c * self.cell_size, self.cell_size, self.cell_size)
+        rect = pygame.Rect(c * self.cell_size, r * self.cell_size, self.cell_size, self.cell_size)
         pygame.draw.rect(self.screen, color, rect)
         self.values[r][c] = 2
