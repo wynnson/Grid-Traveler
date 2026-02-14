@@ -32,7 +32,7 @@ def bfs(grid: Grid, color: tuple[int], r: int=0, c: int=0) -> bool:
                 return True
 
         pygame.event.pump()
-        clock.tick(80)
+        clock.tick(120)
 
         r, c = neighbors.popleft()
         visited.append((r, c))
@@ -92,7 +92,7 @@ def dfs(grid: Grid, color: tuple[int], r: int=0, c: int=0) -> bool:
                 return True
 
         pygame.event.pump()
-        clock.tick(80)
+        clock.tick(120)
 
         curr_r, curr_c = stack.pop()
         cell = grid.values[curr_r][curr_c]
@@ -129,7 +129,7 @@ def trace(grid: Grid, visited: set, color: tuple[int]) -> None:
     """
     clock = pygame.time.Clock()
     for r, c in visited:
-        clock.tick(240)
+        clock.tick(360)
         rect = pygame.Rect(c * grid.cell_size, r * grid.cell_size, grid.cell_size, grid.cell_size)
         pygame.draw.rect(grid.screen, color, rect)
         pygame.display.update(rect)

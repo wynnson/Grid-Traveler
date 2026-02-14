@@ -7,8 +7,16 @@
 ## Description
 A simple 2d grid traveler with pygame to visualize traditional graph traversal algorithms. 
 
+#### Controls
+```bash 
+r - reset
+b - run BFS
+d - run DFS
+```
+
 ## Requirements
 Python virtual environment is recommended.
+
 #### Run:
 ```bash 
 pip install -r requirements.txt
