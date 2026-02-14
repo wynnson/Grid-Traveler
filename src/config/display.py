@@ -1,0 +1,4 @@
+class Display:
+    SCREEN_WIDTH = 600
+    SCREEN_HEIGHT = 600
+    CELL_SIZE = 40
