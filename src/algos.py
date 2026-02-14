@@ -128,8 +128,11 @@ def trace(grid: Grid, visited: set, color: tuple[int]) -> None:
         color: color of travelor
     """
     clock = pygame.time.Clock()
-    for r, c in visited:
-        clock.tick(360)
-        rect = pygame.Rect(c * grid.cell_size, r * grid.cell_size, grid.cell_size, grid.cell_size)
-        pygame.draw.rect(grid.screen, color, rect)
-        pygame.display.update(rect)
+    def highlight():
+        for r, c in visited:
+            clock.tick(360)
+            rect = pygame.Rect(c * grid.cell_size, r * grid.cell_size, grid.cell_size, grid.cell_size)
+            pygame.draw.rect(grid.screen, color, rect)
+            pygame.display.update(rect)
+
+    highlight()
