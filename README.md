@@ -17,7 +17,13 @@ d - run DFS
 ## Requirements
 Python virtual environment is recommended.
 
-#### Run:
+#### Install:
 ```bash 
 pip install -r requirements.txt
+```
+
+## Run
+Inside your venv,
+```bash 
+python3 -m src.main 
 ```
