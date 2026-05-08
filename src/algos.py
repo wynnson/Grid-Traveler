@@ -1,7 +1,10 @@
 import pygame
-from collections import deque
+import heapq
+
+from src.config.status import Status
 from src.grid import Grid
 from src.config.colors import Colors
+
 
 def bfs(grid: Grid, color: tuple[int], r: int=0, c: int=0) -> bool:
     """BFS traveler.
@@ -15,12 +18,14 @@ def bfs(grid: Grid, color: tuple[int], r: int=0, c: int=0) -> bool:
     clock = pygame.time.Clock()
     completed = False
     
-    neighbors = deque()
-    visited = []
-    neighbors.append((r, c))
-    visited.append((r, c))
+    neighbors = []              # pq
+    visited = []                # visited path for trace
 
-    grid.values[r][c] = 0
+    starting_cell = grid.values[r][c]
+    starting_cell.status = Status.V
+
+    heapq.heappush(neighbors, (starting_cell.weight, r, c))
+    visited.append((r, c))
 
     while neighbors:
         for event in pygame.event.get():
@@ -34,30 +39,29 @@ def bfs(grid: Grid, color: tuple[int], r: int=0, c: int=0) -> bool:
         pygame.event.pump()
         clock.tick(120)
 
-        r, c = neighbors.popleft()
+        _, r, c = heapq.heappop(neighbors)
+        color_cell(r, c, grid, color)
         visited.append((r, c))
 
-        rect = pygame.Rect(c * grid.cell_size, r * grid.cell_size, grid.cell_size, grid.cell_size)
-        pygame.draw.rect(grid.screen, color, rect)
-        pygame.display.update(rect)
-
-        if grid.values[r][c] == 2:
+        current_cell = grid.values[r][c]
+        if current_cell.status == Status.E:
             completed = True
             break
-
+        
         directions = ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1))
         for dx, dy in directions:
             if 0 <= dx < grid.num_rows and 0 <= dy < grid.num_cols:
+                neighbor_cell = grid.values[dx][dy]
 
-                if grid.values[dx][dy] == 1:
-                    grid.values[dx][dy] = -1
-                    neighbors.append((dx, dy))
+                if neighbor_cell.status == Status.U:
+                    neighbor_cell.status = Status.V
+                    heapq.heappush(neighbors, (neighbor_cell.weight, dx, dy))
 
-                elif grid.values[dx][dy] == 2:
-                    neighbors.append((dx, dy))
+                elif neighbor_cell.status == Status.E:
+                    heapq.heappush(neighbors, (neighbor_cell.weight, dx, dy))
 
-    status = Colors.GREEN if completed else Colors.RED
-    trace(grid, visited, status)
+    status_color = Colors.GREEN if completed else Colors.RED
+    trace(grid, visited, status_color)
     return False
 
 
@@ -74,13 +78,15 @@ def dfs(grid: Grid, color: tuple[int], r: int=0, c: int=0) -> bool:
     completed = False
     visited = []
 
-    if grid.values[r][c] == 0 or grid.values[r][c] == -1:
+    starting_cell = grid.values[r][c]
+
+    if starting_cell.status == Status.W or starting_cell.status == Status.V:
         return False
 
     stack = [(r, c)]
 
-    if grid.values[r][c] == 1:
-        grid.values[r][c] = -1
+    if starting_cell.status == Status.U:
+        starting_cell.status = Status.V
 
     while stack:
         for event in pygame.event.get():
@@ -94,29 +100,29 @@ def dfs(grid: Grid, color: tuple[int], r: int=0, c: int=0) -> bool:
         pygame.event.pump()
         clock.tick(120)
 
-        curr_r, curr_c = stack.pop()
-        cell = grid.values[curr_r][curr_c]
+        r, c = stack.pop()
+        color_cell(r, c, grid, color)
+        visited.append((r, c))
 
-        rect = pygame.Rect(curr_c * grid.cell_size, curr_r * grid.cell_size, grid.cell_size, grid.cell_size)
-        pygame.draw.rect(grid.screen, color, rect)
-        pygame.display.update(rect)
-        visited.append((curr_r, curr_c))
-
-        if cell == 2:
+        current_cell = grid.values[r][c]
+        if current_cell.status == Status.E:
             completed = True
             break
     
-        directions = ((curr_r + 1, curr_c), (curr_r - 1, curr_c), (curr_r, curr_c + 1), (curr_r, curr_c - 1))
+        directions = ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1))
         for dx, dy in directions:
             if 0 <= dx < grid.num_rows and 0 <= dy < grid.num_cols:
-                if grid.values[dx][dy] == 1:
-                    grid.values[dx][dy] = -1
+                neighbor_cell = grid.values[dx][dy]
+                
+                if neighbor_cell.status == Status.U:
+                    neighbor_cell.status = Status.V
                     stack.append((dx, dy))
-                elif grid.values[dx][dy] == 2:
+                
+                elif neighbor_cell.status == Status.E:
                     stack.append((dx, dy))
     
-    status = Colors.GREEN if completed else Colors.RED
-    trace(grid, visited, status)
+    status_color = Colors.GREEN if completed else Colors.RED
+    trace(grid, visited, status_color)
     return False
 
 
@@ -131,8 +137,21 @@ def trace(grid: Grid, visited: set, color: tuple[int]) -> None:
     def highlight():
         for r, c in visited:
             clock.tick(360)
-            rect = pygame.Rect(c * grid.cell_size, r * grid.cell_size, grid.cell_size, grid.cell_size)
-            pygame.draw.rect(grid.screen, color, rect)
-            pygame.display.update(rect)
+            color_cell(r, c, grid, color)
 
     highlight()
+
+
+def color_cell(r, c, grid, color):
+    """Helper to color a grid cell.
+
+    Args:
+        r: row
+        c: col
+        grid: grid object
+        color: cell color
+    """
+    rect = pygame.Rect(c * grid.cell_size, r * grid.cell_size, grid.cell_size, grid.cell_size)
+    pygame.draw.rect(grid.screen, color, rect)
+    grid.draw_weight(r, c)
+    pygame.display.update(rect)

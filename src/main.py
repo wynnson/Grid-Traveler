@@ -1,5 +1,6 @@
 import pygame
 import random
+from src.config.status import Status
 from src.config.colors import Colors
 from src.config.display import Display
 from src.grid import Grid
@@ -29,8 +30,13 @@ try:
                 running = False
 
             if event.type == pygame.KEYDOWN:
+
                 if event.key == pygame.K_r:
                     grid.reset()
+                    has_run = False
+
+                if event.key == pygame.K_w:
+                    grid.reset(not grid.weighted)
                     has_run = False
 
                 pygame.display.update()
@@ -40,8 +46,8 @@ try:
                     while invalid:
                         start_r = random.randint(0, grid.num_rows - 1)
                         start_c = random.randint(0, grid.num_cols - 1)
-                        starting_position = grid.values[start_r][start_c]
-                        invalid = (starting_position == 0 or starting_position == 2)
+                        starting_cell = grid.values[start_r][start_c]
+                        invalid = (starting_cell.status == Status.W or starting_cell.status == Status.E)
                     
                     if event.key == pygame.K_d:
                         run_again = dfs(grid, color=Colors.YELLOW, r=start_r, c=start_c)
