@@ -1,10 +1,10 @@
 import pygame
 import random
-from src.config.status import Status
+from src.config.status import Status, HeuristicCases
 from src.config.colors import Colors
 from src.config.display import Display
 from src.grid import Grid
-from src.algos import bfs, dfs
+from src.algos import bfs, dfs, A_Star
 
 pygame.init()
 screen = pygame.display.set_mode((Display.SCREEN_WIDTH, Display.SCREEN_HEIGHT))
@@ -22,6 +22,7 @@ grid.reset()
 running = True
 has_run = False
 run_again = False
+controls = {pygame.K_d, pygame.K_b, pygame.K_a, pygame.K_m, pygame.K_e}
 
 try:
     while running:
@@ -36,12 +37,12 @@ try:
                     has_run = False
 
                 if event.key == pygame.K_w:
-                    grid.reset(not grid.weighted)
+                    grid.reset(weighted=True)
                     has_run = False
 
                 pygame.display.update()
 
-                if not has_run and (event.key in (pygame.K_d, pygame.K_b)):
+                if not has_run and event.key in controls:
                     invalid = True
                     while invalid:
                         start_r = random.randint(0, grid.num_rows - 1)
@@ -54,6 +55,15 @@ try:
                     
                     if event.key == pygame.K_b:
                         run_again = bfs(grid, color=Colors.YELLOW, r=start_r, c=start_c)
+
+                    if event.key == pygame.K_a:
+                        run_again = A_Star(grid, color=Colors.YELLOW, r=start_r, c=start_c)
+
+                    if event.key == pygame.K_m:
+                        run_again = A_Star(grid, color=Colors.YELLOW, r=start_r, c=start_c, h=HeuristicCases.M)
+                    
+                    if event.key == pygame.K_e:
+                        run_again = A_Star(grid, color=Colors.YELLOW, r=start_r, c=start_c, h=HeuristicCases.E)
 
                     if run_again:
                         grid.reset()

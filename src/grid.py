@@ -42,10 +42,12 @@ class Grid():
         self.height = height
         self.width = width
         self.cell_size = cell_size
-        self.font = pygame.font.SysFont(None, size=(self.cell_size // 2))
+        self.font = pygame.font.SysFont(None, size=self.cell_size)
 
         self.num_rows = self.height // self.cell_size
         self.num_cols = self.width // self.cell_size
+        self.goal_r = None
+        self.goal_c = None
         self.values = None          # grid of cell objects
         self.weighted = False       # weighted flag
 
@@ -139,6 +141,9 @@ class Grid():
 
         current_cell = self.values[r][c]
         current_cell.status = Status.E
+
+        self.goal_r = r
+        self.goal_c = c
 
     def reset(self, weighted: bool=False):
         """Resets grid to preset defaults.

@@ -8,6 +8,7 @@
 ## Description
 A simple 2d grid traveler with pygame to visualize traditional graph traversal algorithms:
 
+- A* (L1 / L2 heuristics)
 - (Dijkstra's) UCS
 - Depth-First Search
 - Breath-First Search
@@ -16,6 +17,9 @@ A simple 2d grid traveler with pygame to visualize traditional graph traversal a
 ```bash
 r - reset
 w - toggle weighted graph (generates a new graph or turns weights off)
+a - run Dijkstra's / UCS
+m - run A* L1 heuristic
+e - run A* L2 heuristic
 b - run BFS
 d - run DFS
 ```

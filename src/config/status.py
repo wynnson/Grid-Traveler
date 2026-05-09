@@ -6,3 +6,8 @@ class Status(StrEnum):
     V = "visited"
     E = "end"
     W = "wall"
+
+
+class HeuristicCases(StrEnum):
+    M = "manhattan"
+    E = "euclidean"
