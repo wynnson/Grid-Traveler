@@ -1,4 +1,5 @@
 # Grid Traveler
+
 <div align="center">
 <img width="49%" height="825" alt="image" src="https://github.com/user-attachments/assets/32958034-3d49-4e3b-9edc-ebaeea949846" />
 <img width="49%" height="827" alt="image" src="https://github.com/user-attachments/assets/cf6c7448-f990-4301-9776-6db9a033a068" />
@@ -7,12 +8,18 @@
 </div>
 
 ## Description
+
 A simple 2d grid traveler with pygame to visualize traditional graph traversal algorithms on both weighted and unweighted graphs:
 
 - A* (L1 / L2 heuristics)
 - (Dijkstra's) UCS
 - Depth-First Search
 - Breath-First Search
+
+#### Demo of A* with L2 (Manhattan) heuristic:
+<div align="center">
+<img width=auto height=auto alt="A_star" src="https://github.com/user-attachments/assets/5cb75555-3d9a-4ed1-bc67-1419c00dc66d" />
+</div>
 
 #### Controls
 ```bash
