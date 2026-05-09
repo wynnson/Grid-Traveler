@@ -3,6 +3,7 @@ from enum import StrEnum
 
 class Status(StrEnum):
     U = "unvisited"
+    F = "frontier"
     V = "visited"
     E = "end"
     W = "wall"

@@ -5,3 +5,4 @@ class Colors:
     GREEN = (50, 220, 50)
     BLUE = (0, 150, 250)
     YELLOW = (255, 215, 0)
+    ORANGE = (255, 153, 28)
