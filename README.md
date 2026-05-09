@@ -9,7 +9,7 @@
 
 ## Description
 
-A simple 2d grid traveler with pygame to visualize traditional graph traversal algorithms on both weighted and unweighted graphs:
+A simple 2d grid traveler with pygame to visualize classical graph traversal algorithms on both weighted and unweighted graphs:
 
 - A* (L1 / L2 heuristics)
 - (Dijkstra's) UCS
